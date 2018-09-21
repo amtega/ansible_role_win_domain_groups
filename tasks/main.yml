@@ -1,2 +1,51 @@
 ---
 # Role tasks
+
+- name: assert platform is supported
+  vars:
+    distribution: "{{ ansible_facts.distribution | lower }}"
+  assert:
+    that:
+      - distribution in win_domain_groups_supported_distributions
+      - >-
+        ansible_facts.distribution_version
+        is version(win_domain_groups_supported_versions[distribution], ">=")
+  tags:
+    - role::win_domain_groups
+    - role::win_domain_groups::check
+
+- name: setup windows groups
+  loop: "{{ win_domain_groups }}"
+  loop_control:
+    label: "{{ item.name }}"
+  win_domain_user:
+    attributes: >-
+      {{ item.attributes | default(win_domain_groups_defaults.attributes) | default(omit) }}
+    category: >-
+      {{ item.category | default(win_domain_groups_defaults.category) | default(omit) }}
+    description: >-
+      {{ item.description | default(win_domain_groups_defaults.description) | default(omit) }}
+    display_name: >-
+      {{ item.display_name | default(win_domain_groups_defaults.display_name) | default(omit) }}
+    domain_password: >-
+      {{ item.domain_password | default(win_domain_groups_defaults.domain_password) | default(omit) }}
+    domain_server: >-
+      {{ item.domain_server | default(win_domain_groups_defaults.domain_server) | default(omit) }}
+    domain_username: >-
+      {{ item.domain_username | default(win_domain_groups_defaults.domain_username) | default(omit) }}
+    ignore_protection: >-
+      {{ item.ignore_protection | default(win_domain_groups_defaults.ignore_protection) | default(omit) }}
+    managed_by: >-
+      {{ item.managed_by | default(win_domain_groups_defaults.managed_by) | default(omit) }}
+    name: >-
+      {{ item.name | default(win_domain_groups_defaults.name) | default(omit) }}
+    organizational_unit: >-
+      {{ item.organizational_unit | default(win_domain_groups_defaults.organizational_unit) | default(omit) }}
+    protect: >-
+      {{ item.protect | default(win_domain_groups_defaults.protect) | default(omit) }}
+    scope: >-
+      {{ item.scope | default(win_domain_groups_defaults.scope) | default(omit) }}
+    state: >-
+      {{ item.state | default(win_domain_groups_defaults.state) | default(omit) }}
+  tags:
+    - role::win_domain_groups

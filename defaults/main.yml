@@ -1,2 +1,27 @@
 ---
 # Role default lower priority variables
+
+# List of dicts with groups to configure. The dicts have the same attributes
+# that the ones expected by the ansible win_domain_group module.
+# https://docs.ansible.com/ansible/latest/modules/win_domain_group_module.html
+
+# For example:
+#
+# win_domain_groups:
+#   - name: my_group
+#     scope: global
+#     category: security
+#     path: OU=test_groups,DC=mydomain,DC=local
+#     attributes:
+#       mail: my_group@my-domain.local
+#       wWWHomePage: www.my-domain.local
+#     ignore_protection: yes
+#     state: present
+
+win_domain_groups: {}
+
+# Dicitionary with the defaults options to use if no other ones are specified in
+# the `win_domain_groups` variable. The members of the dict are the same attributes
+# that the ones expected by the ansible win_domain_group module
+
+win_domain_groups_defaults: []

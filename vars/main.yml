@@ -1,2 +1,12 @@
 ---
 # Role variables
+
+# Supported distributions
+
+win_domain_users_supported_distributions:
+  - microsoft windows 10 pro
+
+# Supported distributions versions
+
+win_domain_users_supported_versions:
+  microsoft windows 10 pro: 10.0.16299.0

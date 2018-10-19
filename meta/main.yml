@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: win_domain_groups
   author: Daniel Sánchez Fábregas
   description: Manage windows domain groups through the win_domain_group module
   company: AMTEGA - Xunta de Galicia

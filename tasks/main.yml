@@ -18,7 +18,7 @@
   loop: "{{ win_domain_groups }}"
   loop_control:
     label: "{{ item.name }}"
-  win_domain_user:
+  win_domain_group:
     attributes: >-
       {{ item.attributes | default(win_domain_groups_defaults.attributes) | default(omit) }}
     category: >-

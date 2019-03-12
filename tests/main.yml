@@ -3,22 +3,23 @@
 
 
 - name: run win_domain_groups test
+  gather_facts: no
   hosts: test_machines
   vars:
-    test_ad_pdc: DC01
-    test_ad_user: ansible_test
-    test_ad_ou: CN=Users,DC=domain,DC=local
-    test_ad_group: ansible_test_group
-    test_ad_group_ou: "{{ test_ad_ou }}"
+    test_ad_pdc: "{{ DC }}"
+    test_ad_ou: "{{ TEST_AD_OU }}"
+    test_ad_group_ou: "{{ TEST_AD_OU }}"
     test_ad_max_users: 4
-    test_domain_name: "{{ man_domain_setup_domain_name }}"
-    test_domain_password: "{{ man_domain_setup_password }}"
-    test_domain_username: "{{ man_domain_setup_username }}"
+    test_domain_name: "{{ DOMAIN_NETBIOS }}"  # Powershell $env:userdomain
+    test_domain_password: "{{ ADMIN_PASSWORD }}"
+    test_domain_username: "{{ ADMIN_USER }}"
+    test_ad_user: ansible_test
+    test_ad_group: ansible_test_group
     # ansible-windows/vagrant/inventory.yml have transport to basic, we need
     #  to rewrite it to work
     ansible_winrm_transport: credssp
   tasks:
-    
+
     - name: ensure win_domain_group is working
       block:
         - name: ensure the RSAT-AD-PowerShell feature is installed
@@ -34,10 +35,10 @@
 
         - name: win ping
           win_ping:
-        - name: "win ping {{ test_ad_pdc }}"
-          win_ping:
-          delegate_to: "{{ test_ad_pdc }}"
-          run_once: true
+        # - name: "win ping {{ test_ad_pdc }}"
+        #   win_ping:
+        #   delegate_to: "{{ test_ad_pdc }}"
+        #   run_once: true
 
         - name: add test user
           win_domain_user:
@@ -67,7 +68,7 @@
 
       tags: win_domain_users::previous
 
-    - name: create test users
+    - name: create test group
       include_role:
         name: amtega.win_domain_groups
       vars:
@@ -82,5 +83,59 @@
             state: present
           - name: your_group
             state: present
+
+      tags:  win_domain_groups::readme_example
+
+    - name: create test group (idempotence)
+      include_role:
+        name: amtega.win_domain_groups
+      vars:
+        win_domain_groups_defaults:
+          scope: global
+          category: security
+          path: "{{ test_ad_ou }}"
+        win_domain_groups:
+          - name: my_group
+            state: present
+          - name: our_group
+            state: present
+          - name: your_group
+            state: present
+
+      tags:  win_domain_groups::readme_example
+
+    - name: remove test group
+      include_role:
+        name: amtega.win_domain_groups
+      vars:
+        win_domain_groups_defaults:
+          scope: global
+          category: security
+          path: "{{ test_ad_ou }}"
+        win_domain_groups:
+          - name: my_group
+            state: absent
+          - name: our_group
+            state: absent
+          - name: your_group
+            state: absent
+
+      tags:  win_domain_groups::readme_example
+
+    - name: remove test group (idempotence)
+      include_role:
+        name: amtega.win_domain_groups
+      vars:
+        win_domain_groups_defaults:
+          scope: global
+          category: security
+          path: "{{ test_ad_ou }}"
+        win_domain_groups:
+          - name: my_group
+            state: absent
+          - name: our_group
+            state: absent
+          - name: your_group
+            state: absent
 
       tags:  win_domain_groups::readme_example

@@ -3,22 +3,20 @@
 
 
 - name: run win_domain_groups test
-  gather_facts: no
-  hosts: test_machines
-  vars:
-    test_ad_pdc: "{{ DC }}"
-    test_ad_ou: "{{ TEST_AD_OU }}"
-    test_ad_group_ou: "{{ TEST_AD_OU }}"
-    test_ad_max_users: 4
-    test_domain_name: "{{ DOMAIN_NETBIOS }}"  # Powershell $env:userdomain
-    test_domain_password: "{{ ADMIN_PASSWORD }}"
-    test_domain_username: "{{ ADMIN_USER }}"
-    test_ad_user: ansible_test
-    test_ad_group: ansible_test_group
-    # ansible-windows/vagrant/inventory.yml have transport to basic, we need
-    #  to rewrite it to work
-    ansible_winrm_transport: credssp
+  hosts: win_domain_groups_testing_host
   tasks:
+
+    - name: check test parameters existence
+      assert:
+        that:
+          - test_ad_pdc is defined
+          - test_ad_ou is defined
+          - test_ad_group_ou is defined
+          - test_ad_max_users is defined
+          - test_domain_name is defined
+          - test_ad_user is defined
+          - test_ad_group is defined
+          - test_domain_password is defined
 
     - name: ensure win_domain_group is working
       block:
@@ -35,10 +33,6 @@
 
         - name: win ping
           win_ping:
-        # - name: "win ping {{ test_ad_pdc }}"
-        #   win_ping:
-        #   delegate_to: "{{ test_ad_pdc }}"
-        #   run_once: true
 
         - name: add test user
           win_domain_user:

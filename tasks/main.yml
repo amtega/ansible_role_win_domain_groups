@@ -1,18 +1,6 @@
 ---
 # Role tasks
 
-- name: assert platform is supported
-  vars:
-    distribution: "{{ ansible_facts.distribution | lower }}"
-  assert:
-    that:
-      - distribution in win_domain_groups_supported_distributions
-      - >-
-        ansible_facts.distribution_version
-        is version(win_domain_groups_supported_versions[distribution], ">=")
-  tags:
-    - role::win_domain_groups
-    - role::win_domain_groups::check
 
 - name: setup windows groups
   loop: "{{ win_domain_groups }}"

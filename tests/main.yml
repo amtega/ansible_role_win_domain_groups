@@ -26,10 +26,11 @@
               - RSAT-AD-PowerShell
             state: present
           register: ad_feature_result
+          failed_when: false # HACK Fails in windows 10
 
         - name: reboot host if required
           win_reboot:
-          when: ad_feature_result.reboot_required
+          when: ad_feature_result.reboot_required | default(False)
 
         - name: win ping
           win_ping:

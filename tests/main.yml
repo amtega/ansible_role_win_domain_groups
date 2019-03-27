@@ -1,12 +1,10 @@
 ---
 # Tasks for testing role
 
-
-- name: run win_domain_groups test
-  hosts: win_domain_groups_testing_host
+- name: Run win_domain_groups test
+  hosts: "{{ win_domain_groups_testing_host }}"
   tasks:
-
-    - name: check test parameters existence
+    - name: Check test parameters existence
       assert:
         that:
           - test_ad_pdc is defined
@@ -18,9 +16,9 @@
           - test_ad_group is defined
           - test_domain_password is defined
 
-    - name: ensure win_domain_group is working
+    - name: Ensure win_domain_group is working
       block:
-        - name: ensure the RSAT-AD-PowerShell feature is installed
+        - name: Ensure the RSAT-AD-PowerShell feature is installed
           win_feature:
             name:
               - RSAT-AD-PowerShell
@@ -28,14 +26,14 @@
           register: ad_feature_result
           failed_when: false # HACK Fails in windows 10
 
-        - name: reboot host if required
+        - name: Reboot host if required
           win_reboot:
           when: ad_feature_result.reboot_required | default(False)
 
-        - name: win ping
+        - name: Win ping
           win_ping:
 
-        - name: add test user
+        - name: Add test user
           win_domain_user:
             name: "{{ test_ad_user }}"
             upn: '{{ test_ad_user }}@{{ test_domain_name }}'
@@ -43,27 +41,26 @@
             update_password: on_create
             state: present
 
-        - name: add test group
+        - name: Add test group
           win_domain_group:
             name: "{{ test_ad_group }}"
             scope: global
             path: "{{ test_ad_ou }}"
             state: present
 
-        - name: remove test group
+        - name: Remove test group
           win_domain_group:
             name: "{{ test_ad_group }}"
             state: absent
 
-        - name: delete user
+        - name: Delete user
           win_domain_user:
             name: "{{ test_ad_user }}"
             domain_server: "{{ test_ad_pdc }}"
             state: absent
+      tags: win_domain_groups::previous
 
-      tags: win_domain_users::previous
-
-    - name: create test group
+    - name: Create test group
       include_role:
         name: amtega.win_domain_groups
       vars:
@@ -78,10 +75,9 @@
             state: present
           - name: your_group
             state: present
+      tags: win_domain_groups::readme_example
 
-      tags:  win_domain_groups::readme_example
-
-    - name: create test group (idempotence)
+    - name: Create test group (idempotence)
       include_role:
         name: amtega.win_domain_groups
       vars:
@@ -96,10 +92,9 @@
             state: present
           - name: your_group
             state: present
+      tags: win_domain_groups::readme_example
 
-      tags:  win_domain_groups::readme_example
-
-    - name: remove test group
+    - name: Remove test group
       include_role:
         name: amtega.win_domain_groups
       vars:
@@ -114,10 +109,9 @@
             state: absent
           - name: your_group
             state: absent
+      tags: win_domain_groups::readme_example
 
-      tags:  win_domain_groups::readme_example
-
-    - name: remove test group (idempotence)
+    - name: Remove test group (idempotence)
       include_role:
         name: amtega.win_domain_groups
       vars:
@@ -132,5 +126,4 @@
             state: absent
           - name: your_group
             state: absent
-
-      tags:  win_domain_groups::readme_example
+      tags: win_domain_groups::readme_example

@@ -5,7 +5,7 @@
 # that the ones expected by the ansible win_domain_group module.
 # https://docs.ansible.com/ansible/latest/modules/win_domain_group_module.html
 
-# For example:
+# Example:
 #
 # win_domain_groups:
 #   - name: my_group
@@ -18,10 +18,17 @@
 #     ignore_protection: yes
 #     state: present
 
-win_domain_groups: {}
+win_domain_groups: []
 
-# Dicitionary with the defaults options to use if no other ones are specified in
-# the `win_domain_groups` variable. The members of the dict are the same attributes
-# that the ones expected by the ansible win_domain_group module
+# Dictionary with the defaults options to use if no other ones are specified in
+# the `win_domain_groups` variable. The members of the dict are the same
+# attributes that the ones expected by the ansible win_domain_group module
 
 win_domain_groups_defaults: []
+
+# Indicate `win_domain_groups` must be loaded also from host variables. Any host
+# variable that begins with "win_domain_groups_*" and contains the necessary
+# attributes will be loaded as an item to manage by the role. The variables must
+# follow the structure detailed before for `win_domain_groups`
+
+win_domain_groups_load_from_hostvars: no

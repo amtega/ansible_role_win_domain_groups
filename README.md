@@ -5,14 +5,11 @@ This is an [Ansible](http://www.ansible.com) role which manages windows domain g
 ## Requirements
 
 [Ansible 2.7+](http://docs.ansible.com/ansible/latest/intro_installation.html)
+[requests-credssp 1.0.2+](https://pypi.org/project/requests-credssp)
 
 ## Role Variables
 
 A list of all the default variables for this role is available in `defaults/main.yml`.
-
-## Dependencies
-
-None.
 
 ## Example Playbook
 
@@ -38,37 +35,26 @@ This is an example playbook:
         state: present
 ```
 
-
 ## Testing
 
-Tests are based on vagrant virtual machines. You can setup vagrant engine
-quickly using the role [amtega.vagrant_engine](https://galaxy.ansible.com/amtega/vagrant_engine).
+To run test you must point the variable `win_domain_groups_testing_host` to a windows host fullfilling the ansible requirements documented in https://docs.ansible.com/ansible/latest/user_guide/windows_setup.html. You must defined also the inventory items for this host required to connect.
 
-Once you have vagrant and virtualbox, you can run the tests with the following
-commands:
+One way to provide this information is calling the testing playbook passing the host to use and an additional vault inventory plus the default one provided for testing, as it's show in this example:
 
 ```shell
 $ cd amtega.win_domain_groups/tests
-$ ansible-playbook main.yml
+$ ansible-playbook main.yml -e "win_domain_groups_testing_host=test_host" -i inventory -i ~/mycustominventory.yml --vault-id myvault@prompt
 ```
-It will create two vagrant machines (Domain controler and server) and execute
-the tests on them
 
 ## License
 
-Copyright (C) 2018 AMTEGA - Xunta de Galicia
+Copyright (C) 2019 AMTEGA - Xunta de Galicia
 
-This role is free software: you can redistribute it and/or modify
-it under the terms of:
-GNU General Public License version 3, or (at your option) any later version;
-or the European Union Public License, either Version 1.2 or – as soon
-they will be approved by the European Commission ­subsequent versions of
-the EUPL;
+This role is free software: you can redistribute it and/or modify it under the terms of:
 
-This role is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details or European Union Public License for more details.
+GNU General Public License version 3, or (at your option) any later version; or the European Union Public License, either Version 1.2 or – as soon they will be approved by the European Commission ­subsequent versions of the EUPL.
+
+This role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details or European Union Public License for more details.
 
 ## Author Information
 

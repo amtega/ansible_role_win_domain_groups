@@ -1,18 +1,40 @@
+---
+# Role dependencies
+
 galaxy_info:
   role_name: win_domain_groups
   author: Daniel Sánchez Fábregas
   description: Manage windows domain groups through the win_domain_group module
   company: AMTEGA - Xunta de Galicia
   license: GPLv3 or EUPL
-  min_ansible_version: 2.6
-
+  min_ansible_version: 2.7
   platforms:
-  - name: Windows
-    versions:
-      - 2016
+    - name: EL
+      versions:
+        - 7
+    - name: Fedora
+      versions:
+        - 27
+        - 28
+    - name: Windows
+      versions:
+        - 2016
   galaxy_tags:
     - windows
     - activedirectory
     - group
 
-dependencies: []
+dependencies:
+  - role: amtega.select_hostvars
+    vars:
+      select_hostvars_query:
+        pattern: "^win_domain_groups_.*"
+        exclude_pattern: "^win_domain_groups_defaults$"
+        attributes:
+          - name
+          - path
+        fact_name: win_domain_groups_hostvars
+        output_type: list
+    when: win_domain_groups_load_from_hostvars
+    tags:
+      - role::win_domain_groups

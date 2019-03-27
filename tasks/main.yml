@@ -1,39 +1,74 @@
 ---
 # Role tasks
 
-
-- name: setup windows groups
-  loop: "{{ win_domain_groups }}"
-  loop_control:
-    label: "{{ item.name }}"
+- name: Setup windows groups
   win_domain_group:
     attributes: >-
-      {{ item.attributes | default(win_domain_groups_defaults.attributes) | default(omit) }}
+      {{ win_domain_groups_item.attributes
+         | default(win_domain_groups_defaults.attributes)
+         | default(omit) }}
     category: >-
-      {{ item.category | default(win_domain_groups_defaults.category) | default(omit) }}
+      {{ win_domain_groups_item.category
+         | default(win_domain_groups_defaults.category)
+         | default(omit) }}
     description: >-
-      {{ item.description | default(win_domain_groups_defaults.description) | default(omit) }}
+      {{ win_domain_groups_item.description
+         | default(win_domain_groups_defaults.description)
+         | default(omit) }}
     display_name: >-
-      {{ item.display_name | default(win_domain_groups_defaults.display_name) | default(omit) }}
+      {{ win_domain_groups_item.display_name
+         | default(win_domain_groups_defaults.display_name)
+         | default(omit) }}
     domain_password: >-
-      {{ item.domain_password | default(win_domain_groups_defaults.domain_password) | default(omit) }}
+      {{ win_domain_groups_item.domain_password
+         | default(win_domain_groups_defaults.domain_password)
+         | default(omit) }}
     domain_server: >-
-      {{ item.domain_server | default(win_domain_groups_defaults.domain_server) | default(omit) }}
+      {{ win_domain_groups_item.domain_server
+         | default(win_domain_groups_defaults.domain_server)
+         | default(omit) }}
     domain_username: >-
-      {{ item.domain_username | default(win_domain_groups_defaults.domain_username) | default(omit) }}
+      {{ win_domain_groups_item.domain_username
+         | default(win_domain_groups_defaults.domain_username)
+         | default(omit) }}
     ignore_protection: >-
-      {{ item.ignore_protection | default(win_domain_groups_defaults.ignore_protection) | default(omit) }}
+      {{ win_domain_groups_item.ignore_protection
+         | default(win_domain_groups_defaults.ignore_protection)
+         | default(omit) }}
     managed_by: >-
-      {{ item.managed_by | default(win_domain_groups_defaults.managed_by) | default(omit) }}
+      {{ win_domain_groups_item.managed_by
+         | default(win_domain_groups_defaults.managed_by)
+         | default(omit) }}
     name: >-
-      {{ item.name | default(win_domain_groups_defaults.name) | default(omit) }}
+      {{ win_domain_groups_item.name
+         | default(win_domain_groups_defaults.name)
+         | default(omit) }}
     organizational_unit: >-
-      {{ item.organizational_unit | default(win_domain_groups_defaults.organizational_unit) | default(omit) }}
+      {{ win_domain_groups_item.organizational_unit
+         | default(win_domain_groups_defaults.organizational_unit)
+         | default(omit) }}
     protect: >-
-      {{ item.protect | default(win_domain_groups_defaults.protect) | default(omit) }}
+      {{ win_domain_groups_item.protect
+         | default(win_domain_groups_defaults.protect)
+         | default(omit) }}
     scope: >-
-      {{ item.scope | default(win_domain_groups_defaults.scope) | default(omit) }}
+      {{ win_domain_groups_item.scope
+         | default(win_domain_groups_defaults.scope)
+         | default(omit) }}
     state: >-
-      {{ item.state | default(win_domain_groups_defaults.state) | default(omit) }}
+      {{ win_domain_groups_item.state
+         | default(win_domain_groups_defaults.state)
+         | default(omit) }}
+  loop: "{{ win_domain_groups_to_manage }}"
+  loop_control:
+    loop_var: win_domain_groups_item
+    label: "{{ win_domain_groups_item.name }}"
+  vars:
+    win_domain_groups_to_manage: >-
+      {{ win_domain_groups
+         + ((win_domain_groups_load_from_hostvars)
+            | ternary(win_domain_groups_hostvars
+                      | default([])
+                      | flatten, [])) }}
   tags:
     - role::win_domain_groups

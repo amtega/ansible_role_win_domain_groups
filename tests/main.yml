@@ -37,7 +37,7 @@
               {{ win_domain_groups_tests_ad_user
                  + "@"
                  + win_domain_groups_tests_domain_name }}
-            password: '{{ win_domain_groups_tests_domain_password }}
+            password: "{{ win_domain_groups_tests_domain_password }}"
             update_password: on_create
             state: present
 

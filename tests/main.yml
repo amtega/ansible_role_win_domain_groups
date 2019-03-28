@@ -57,7 +57,6 @@
           win_domain_user:
             name: "{{ win_domain_groups_tests_ad_user }}"
             state: absent
-      tags: win_domain_groups::previous
 
     - name: Create test group
       include_role:
@@ -74,7 +73,6 @@
             state: present
           - name: your_group
             state: present
-      tags: win_domain_groups::readme_example
 
     - name: Create test group (idempotence)
       include_role:
@@ -91,7 +89,6 @@
             state: present
           - name: your_group
             state: present
-      tags: win_domain_groups::readme_example
 
     - name: Remove test group
       include_role:
@@ -108,7 +105,6 @@
             state: absent
           - name: your_group
             state: absent
-      tags: win_domain_groups::readme_example
 
     - name: Remove test group (idempotence)
       include_role:
@@ -125,4 +121,3 @@
             state: absent
           - name: your_group
             state: absent
-      tags: win_domain_groups::readme_example

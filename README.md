@@ -4,9 +4,8 @@ This is an [Ansible](http://www.ansible.com) role which manages windows domain g
 
 ## Requirements
 
-[Ansible 2.7+](http://docs.ansible.com/ansible/latest/intro_installation.html)
-[pywinrm 0.3.0+](https://pypi.org/project/pywinrm)
-[requests-credssp 1.0.2+](https://pypi.org/project/requests-credssp)
+[pywinrm 0.3.0+](https://pypi.org/project/pywinrm) on the control host.
+[requests-credssp 1.0.2+](https://pypi.org/project/requests-credssp) on the control host.
 
 ## Role Variables
 
@@ -19,7 +18,7 @@ This is an example playbook:
 ```yaml
 ---
 
-- hosts: windows_command_host
+- hosts: windows_ad
   roles:
     - amtega.win_domain_groups
   vars:
@@ -42,11 +41,11 @@ To run test you must pass in the command line the variable `win_domain_groups_te
 
 Additionally the tests requires the following set of variables that can be defined in the inventory or passed in the command line:
 
-- `win_domain_groups_tests_ad_ou`: OU to use during tests
 - `win_domain_groups_tests_domain_name`: windows domain name
+- `win_domain_groups_tests_ad_ou`: OU to use during tests
 - `win_domain_groups_tests_ad_group`: testing group name
-- `win_domain_groups_tests_ad_user`: username with privileges to create groups
-- `win_domain_groups_tests_domain_password`: password of the previous username
+- `win_domain_groups_tests_ad_user`: testing user name
+- `win_domain_groups_tests_ad_password`: password for the testing user
 
 One way to provide all the previois information is calling the testing playbook passing the host to use and an additional vault inventory plus the default one provided for testing, as it's show in this example:
 

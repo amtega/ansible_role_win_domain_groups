@@ -2,19 +2,17 @@
 # Tasks for testing role
 
 - name: Run win_domain_groups test
-  hosts: "{{ win_domain_groups_testing_host }}"
+  hosts: "{{ win_domain_groups_test_host }}"
   tasks:
     - name: Check test parameters existence
       assert:
         that:
-          - test_ad_pdc is defined
-          - test_ad_ou is defined
-          - test_ad_group_ou is defined
-          - test_ad_max_users is defined
-          - test_domain_name is defined
-          - test_ad_user is defined
-          - test_ad_group is defined
-          - test_domain_password is defined
+          - win_domain_groups_test_ad_pdc is defined
+          - win_domain_groups_test_ad_ou is defined
+          - win_domain_groups_test_domain_name is defined
+          - win_domain_groups_test_ad_group is defined
+          - win_domain_groups_test_ad_user is defined
+          - win_domain_groups_test_domain_password is defined
 
     - name: Ensure win_domain_group is working
       block:
@@ -35,28 +33,27 @@
 
         - name: Add test user
           win_domain_user:
-            name: "{{ test_ad_user }}"
-            upn: '{{ test_ad_user }}@{{ test_domain_name }}'
-            password: '{{ test_domain_password }}'
+            name: "{{ win_domain_groups_test_ad_user }}"
+            upn: '{{ win_domain_groups_test_ad_user }}@{{ win_domain_groups_test_domain_name }}'
+            password: '{{ win_domain_groups_test_domain_password }}'
             update_password: on_create
             state: present
 
         - name: Add test group
           win_domain_group:
-            name: "{{ test_ad_group }}"
+            name: "{{ win_domain_groups_test_ad_group }}"
             scope: global
-            path: "{{ test_ad_ou }}"
+            path: "{{ win_domain_groups_test_ad_ou }}"
             state: present
 
         - name: Remove test group
           win_domain_group:
-            name: "{{ test_ad_group }}"
+            name: "{{ win_domain_groups_test_ad_group }}"
             state: absent
 
         - name: Delete user
           win_domain_user:
-            name: "{{ test_ad_user }}"
-            domain_server: "{{ test_ad_pdc }}"
+            name: "{{ win_domain_groups_test_ad_user }}"
             state: absent
       tags: win_domain_groups::previous
 
@@ -67,7 +64,7 @@
         win_domain_groups_defaults:
           scope: global
           category: security
-          path: "{{ test_ad_ou }}"
+          path: "{{ win_domain_groups_test_ad_ou }}"
         win_domain_groups:
           - name: my_group
             state: present
@@ -84,7 +81,7 @@
         win_domain_groups_defaults:
           scope: global
           category: security
-          path: "{{ test_ad_ou }}"
+          path: "{{ win_domain_groups_test_ad_ou }}"
         win_domain_groups:
           - name: my_group
             state: present
@@ -101,7 +98,7 @@
         win_domain_groups_defaults:
           scope: global
           category: security
-          path: "{{ test_ad_ou }}"
+          path: "{{ win_domain_groups_test_ad_ou }}"
         win_domain_groups:
           - name: my_group
             state: absent
@@ -118,7 +115,7 @@
         win_domain_groups_defaults:
           scope: global
           category: security
-          path: "{{ test_ad_ou }}"
+          path: "{{ win_domain_groups_test_ad_ou }}"
         win_domain_groups:
           - name: my_group
             state: absent

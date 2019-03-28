@@ -5,6 +5,7 @@ This is an [Ansible](http://www.ansible.com) role which manages windows domain g
 ## Requirements
 
 [Ansible 2.7+](http://docs.ansible.com/ansible/latest/intro_installation.html)
+[pywinrm 0.3.0+](https://pypi.org/project/pywinrm)
 [requests-credssp 1.0.2+](https://pypi.org/project/requests-credssp)
 
 ## Role Variables

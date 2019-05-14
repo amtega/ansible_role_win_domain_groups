@@ -47,7 +47,7 @@ Additionally the tests requires the following set of variables that can be defin
 - `win_domain_groups_tests_ad_user`: testing user name
 - `win_domain_groups_tests_ad_password`: password for the testing user
 
-One way to provide all the previois information is calling the testing playbook passing the host to use and an additional vault inventory plus the default one provided for testing, as it's show in this example:
+One way to provide all the previous information is calling the testing playbook passing the host to use and an additional vault inventory plus the default one provided for testing, as it's show in this example:
 
 ```shell
 $ cd amtega.win_domain_groups/tests

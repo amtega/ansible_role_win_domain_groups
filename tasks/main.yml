@@ -63,6 +63,7 @@
   loop_control:
     loop_var: win_domain_groups_item
     label: "{{ win_domain_groups_item.name }}"
+  no_log: "{{ win_domain_groups_no_log }}"
   vars:
     win_domain_groups_to_manage: >-
       {{ win_domain_groups

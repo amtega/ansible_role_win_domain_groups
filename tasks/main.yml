@@ -59,6 +59,7 @@
       {{ win_domain_groups_item.state
          | default(win_domain_groups_defaults.state)
          | default(omit) }}
+  register: win_domain_groups_setup_result
   loop: "{{ win_domain_groups_to_manage }}"
   loop_control:
     loop_var: win_domain_groups_item

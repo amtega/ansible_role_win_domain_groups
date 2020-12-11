@@ -1,70 +1,112 @@
 ---
 # Role tasks
 
-- name: Setup windows groups
-  win_domain_group:
-    attributes: >-
-      {{ win_domain_groups_item.attributes
-         | default(win_domain_groups_defaults.attributes)
-         | default(omit) }}
-    category: >-
-      {{ win_domain_groups_item.category
-         | default(win_domain_groups_defaults.category)
-         | default(omit) }}
-    description: >-
-      {{ win_domain_groups_item.description
-         | default(win_domain_groups_defaults.description)
-         | default(omit) }}
-    display_name: >-
-      {{ win_domain_groups_item.display_name
-         | default(win_domain_groups_defaults.display_name)
-         | default(omit) }}
-    domain_password: >-
-      {{ win_domain_groups_item.domain_password
-         | default(win_domain_groups_defaults.domain_password)
-         | default(omit) }}
-    domain_server: >-
-      {{ win_domain_groups_item.domain_server
-         | default(win_domain_groups_defaults.domain_server)
-         | default(omit) }}
-    domain_username: >-
-      {{ win_domain_groups_item.domain_username
-         | default(win_domain_groups_defaults.domain_username)
-         | default(omit) }}
-    ignore_protection: >-
-      {{ win_domain_groups_item.ignore_protection
-         | default(win_domain_groups_defaults.ignore_protection)
-         | default(omit) }}
-    managed_by: >-
-      {{ win_domain_groups_item.managed_by
-         | default(win_domain_groups_defaults.managed_by)
-         | default(omit) }}
-    name: >-
-      {{ win_domain_groups_item.name
-         | default(win_domain_groups_defaults.name)
-         | default(omit) }}
-    organizational_unit: >-
-      {{ win_domain_groups_item.organizational_unit
-         | default(win_domain_groups_defaults.organizational_unit)
-         | default(omit) }}
-    protect: >-
-      {{ win_domain_groups_item.protect
-         | default(win_domain_groups_defaults.protect)
-         | default(omit) }}
-    scope: >-
-      {{ win_domain_groups_item.scope
-         | default(win_domain_groups_defaults.scope)
-         | default(omit) }}
-    state: >-
-      {{ win_domain_groups_item.state
-         | default(win_domain_groups_defaults.state)
-         | default(omit) }}
-  register: win_domain_groups_setup_result
-  loop: "{{ win_domain_groups_to_manage }}"
-  loop_control:
-    loop_var: win_domain_groups_item
-    label: "{{ win_domain_groups_item.name }}"
-  no_log: "{{ win_domain_groups_no_log }}"
+- block:
+    - name: Setup windows groups
+      win_domain_group:
+        attributes: >-
+          {{ win_domain_groups_item.attributes
+             | default(win_domain_groups_defaults.attributes)
+             | default(omit) }}
+        category: >-
+          {{ win_domain_groups_item.category
+             | default(win_domain_groups_defaults.category)
+             | default(omit) }}
+        description: >-
+          {{ win_domain_groups_item.description
+             | default(win_domain_groups_defaults.description)
+             | default(omit) }}
+        display_name: >-
+          {{ win_domain_groups_item.display_name
+             | default(win_domain_groups_defaults.display_name)
+             | default(omit) }}
+        domain_password: >-
+          {{ win_domain_groups_item.domain_password
+             | default(win_domain_groups_defaults.domain_password)
+             | default(omit) }}
+        domain_server: >-
+          {{ win_domain_groups_item.domain_server
+             | default(win_domain_groups_defaults.domain_server)
+             | default(omit) }}
+        domain_username: >-
+          {{ win_domain_groups_item.domain_username
+             | default(win_domain_groups_defaults.domain_username)
+             | default(omit) }}
+        ignore_protection: >-
+          {{ win_domain_groups_item.ignore_protection
+             | default(win_domain_groups_defaults.ignore_protection)
+             | default(omit) }}
+        managed_by: >-
+          {{ win_domain_groups_item.managed_by
+             | default(win_domain_groups_defaults.managed_by)
+             | default(omit) }}
+        name: >-
+          {{ win_domain_groups_item.name
+             | default(win_domain_groups_defaults.name)
+             | default(omit) }}
+        organizational_unit: >-
+          {{ win_domain_groups_item.organizational_unit
+             | default(win_domain_groups_defaults.organizational_unit)
+             | default(omit) }}
+        protect: >-
+          {{ win_domain_groups_item.protect
+             | default(win_domain_groups_defaults.protect)
+             | default(omit) }}
+        scope: >-
+          {{ win_domain_groups_item.scope
+             | default(win_domain_groups_defaults.scope)
+             | default(omit) }}
+        state: >-
+          {{ win_domain_groups_item.state
+             | default(win_domain_groups_defaults.state)
+             | default(omit) }}
+      register: win_domain_groups_setup_result
+      loop: "{{ win_domain_groups_to_manage }}"
+      loop_control:
+        loop_var: win_domain_groups_item
+        label: "{{ win_domain_groups_item.name }}"
+      no_log: "{{ win_domain_groups_no_log }}"
+
+
+    - name: Setup windows groups into groups
+      win_domain_groups_groups:
+        name: "{{ win_domain_groups_item.name }}"
+        groups: >-
+          {{ win_domain_groups_item.groups
+             | default(win_domain_groups_defaults.groups)
+             | default(omit) }}
+        groups_action: >-
+          {{ win_domain_groups_item.groups_action
+             | default(win_domain_groups_defaults.groups_action)
+             | default(omit) }}
+        domain_password: >-
+          {{ win_domain_groups_item.domain_password
+             | default(win_domain_groups_defaults.domain_password)
+             | default(omit) }}
+        domain_server: >-
+          {{ win_domain_groups_item.domain_server
+             | default(win_domain_groups_defaults.domain_server)
+             | default(omit) }}
+        domain_username: >-
+          {{ win_domain_groups_item.domain_username
+             | default(win_domain_groups_defaults.domain_username)
+             | default(omit) }}
+      register: win_domain_groups_setup_result
+      loop: >-
+        {{ win_domain_groups_to_manage
+           | selectattr("groups", "defined")
+           | list }}
+      loop_control:
+        loop_var: win_domain_groups_item
+        label: >-
+          {{ win_domain_groups_item.name }}
+          /
+          {{ win_domain_groups_item.groups
+             | default(win_domain_groups_defaults.groups)
+             | default([])
+             | join(",") }}
+      no_log: "{{ win_domain_groups_no_log }}"
+
   vars:
     win_domain_groups_to_manage: >-
       {{ win_domain_groups

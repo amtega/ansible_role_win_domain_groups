@@ -4,7 +4,12 @@
 # List of dicts with groups to configure. The dicts have the same attributes
 # that the ones expected by the ansible win_domain_group module.
 # https://docs.ansible.com/ansible/latest/modules/win_domain_group_module.html
-
+#
+# Additionally you can indicate the groups to put in the configured groups using
+# the parameters `groups` and `groups_action` in the same way that
+# win_domain_user module.
+# https://docs.ansible.com/ansible/latest/modules/win_domain_user_module.html
+#
 # Example:
 #
 # win_domain_groups:
@@ -17,6 +22,9 @@
 #       wWWHomePage: www.my-domain.local
 #     ignore_protection: yes
 #     state: present
+#     groups:
+#       - Domain Admins
+#     groups_action: add
 
 win_domain_groups: []
 

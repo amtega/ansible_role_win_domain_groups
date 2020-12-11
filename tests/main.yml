@@ -46,6 +46,9 @@
             name: "{{ win_domain_groups_tests_ad_group }}"
             scope: global
             path: "{{ win_domain_groups_tests_ad_ou }}"
+            groups:
+              - Domain Admins
+            groups_action: add
             state: present
 
         - name: Remove test group

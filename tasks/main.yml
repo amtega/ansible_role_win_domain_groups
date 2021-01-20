@@ -44,9 +44,12 @@
           {{ win_domain_groups_item.name
              | default(win_domain_groups_defaults.name)
              | default(omit) }}
+        # path → alias for organizational_unit
         organizational_unit: >-
           {{ win_domain_groups_item.organizational_unit
+             | default(win_domain_groups_item.path)
              | default(win_domain_groups_defaults.organizational_unit)
+             | default(win_domain_groups_defaults.path)
              | default(omit) }}
         protect: >-
           {{ win_domain_groups_item.protect

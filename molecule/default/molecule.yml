@@ -1,0 +1,41 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint: |
+  ${MOLECULE_SCENARIO_DIRECTORY}/linters.sh
+platforms:
+  - name: "WindowsServer-${INSTANCE_UUID:-1}"
+    box: jborean93/WindowsServer2016
+    memory: 2048
+    provider_options:
+      gui: false
+    provider_raw_config_args:
+      # Disable video
+      - 'customize ["modifyvm", :id, "--graphicscontroller", "none"]'
+      - 'customize ["modifyvm", :id, "--vram", "0"]'
+      # Disable audio
+      - 'customize ["modifyvm", :id, "--audio", "none"]'
+    groups:
+      - molecule_hosts
+provisioner:
+  name: ansible
+  inventory:
+    hosts:
+      molecule_hosts:
+        hosts:
+          WindowsServer-${INSTANCE_UUID:-1}:
+            ansible_host: 127.0.0.1
+            ansible_user: vagrant
+            ansible_password: vagrant
+            ansible_port: 55986
+            ansible_connection: winrm
+            ansible_winrm_transport: ntlm
+            ansible_winrm_server_cert_validation: ignore
+        vars:
+          win_domain_groups_no_log: no
+verifier:
+  name: ansible

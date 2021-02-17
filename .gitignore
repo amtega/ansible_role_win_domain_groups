@@ -1,3 +1,4 @@
+.cache
 *.retry
 *.log
 *.tmp

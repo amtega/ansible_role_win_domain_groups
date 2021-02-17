@@ -25,8 +25,8 @@
 
 - name: Install domain
   win_domain:
-    dns_domain_name: '{{ win_domain_users_tests_domain_name }}'
-    safe_mode_password: '{{ win_domain_users_tests_safe_mode_password }}'
+    dns_domain_name: '{{ win_domain_groups_tests_domain_name }}'
+    safe_mode_password: '{{ win_domain_groups_tests_safe_mode_password }}'
   register: domain_install_result
   until: domain_install_result is successful
   retries: 30

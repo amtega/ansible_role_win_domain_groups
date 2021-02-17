@@ -1,0 +1,37 @@
+---
+
+# Check win_domain_group works properly
+- name: "Add OU: {{ win_domain_groups_tests_ad_ou }}"
+  win_shell: |
+    New-ADOrganizationalUnit -Name "{{ win_domain_groups_tests_ad_ou }}"
+
+- name: Add test user
+  win_domain_user:
+    name: "{{ win_domain_groups_tests_ad_user }}"
+    upn: >-
+      {{ win_domain_groups_tests_ad_user
+         + "@"
+         + win_domain_groups_tests_ad_ou }}
+    password: "{{ win_domain_groups_tests_ad_password }}"
+    update_password: on_create
+    state: present
+
+- name: Add test group
+  win_domain_group:
+    name: "{{ win_domain_groups_tests_ad_group }}"
+    scope: global
+    path: "{{ win_domain_groups_tests_ad_ou }}"
+    groups:
+      - Domain Admins
+    groups_action: add
+    state: present
+
+- name: Remove test group
+  win_domain_group:
+    name: "{{ win_domain_groups_tests_ad_group }}"
+    state: absent
+
+- name: Delete user
+  win_domain_user:
+    name: "{{ win_domain_groups_tests_ad_user }}"
+    state: absent

@@ -8,5 +8,5 @@
       include: scenario_requirements.yml
     - name: Create test domain controler
       include: prepare_ad.yml
-    - name: Create test groups
+    - name: Check win_domain_group is working properly
       include: prepare_check_win_domain_group.yml

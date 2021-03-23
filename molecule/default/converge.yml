@@ -1,9 +1,8 @@
 ---
 
-- name: Pre - Converge
+- name: Converge
   hosts: molecule_hosts
   tasks:
-
     - name: Molecule requirements for this scenario
       include: includes/scenario_requirements.yml
 

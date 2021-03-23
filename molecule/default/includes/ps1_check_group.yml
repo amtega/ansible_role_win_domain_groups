@@ -3,7 +3,7 @@
 # group
 # state_to_fail
 
-- name: Assert group added (using PowerShell 💪🐚)
+- name: Assert group added (using PowerShell)
   win_shell: |-
     # Parameters
     $group = "{{ group }}"

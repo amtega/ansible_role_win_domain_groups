@@ -32,11 +32,10 @@
 - name: Add test group
   win_domain_group:
     name: "{{ win_domain_groups_tests_ad_group }}"
-    scope: global
     path: "{{ win_domain_groups_tests_ad_ou }}"
-    groups:
-      - Domain Admins
-    groups_action: add
+    scope: global
+    category: security
+    protect: no
     state: present
 
 - name: Remove test group

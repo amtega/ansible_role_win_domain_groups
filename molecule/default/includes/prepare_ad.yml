@@ -1,6 +1,5 @@
 ---
 
-
 - name: Wait for connection
   wait_for_connection:
 

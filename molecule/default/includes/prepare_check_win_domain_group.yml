@@ -1,6 +1,7 @@
 ---
 
 # Check win_domain_group works properly
+
 - name: "Add OU: {{ win_domain_groups_tests_ad_ou }}"
   win_shell: |-
     # Parameters

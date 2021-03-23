@@ -1,6 +1,5 @@
 ---
 
-
 - name: Populate test group for removal test
   loop:
     - my_group_to_remove

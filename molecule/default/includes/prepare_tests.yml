@@ -1,7 +1,7 @@
 ---
 
 
-- name: Populate test group for remove group test
+- name: Populate test group for removal test
   loop:
     - my_group_to_remove
     - our_group_to_remove

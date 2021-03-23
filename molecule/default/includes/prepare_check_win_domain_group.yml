@@ -2,7 +2,7 @@
 
 # Check win_domain_group works properly
 - name: "Add OU: {{ win_domain_groups_tests_ad_ou }}"
-  win_shell: >-
+  win_shell: |-
     # Parameters
     $ou = "{{ win_domain_groups_tests_ad_ou }}"
     $ou_name = "{{ win_domain_groups_tests_ad_ou_name }}"
@@ -12,14 +12,17 @@
       $ou_obj = Get-ADOrganizationalUnit -Identity $ou
     } Catch { $ou_obj = $null }
 
-    If ($ou_obj -and $ou_obj.Name -eq $ou_name) {
+    If ($ou_obj) {
+      Write-Host ("OU already exists")
+    } Else {
       Try {
-        $ou_obj = New-ADOrganizationalUnit `
+        New-ADOrganizationalUnit `
           -Name "$ou_name" `
           -Path "$ou_base" `
           -ProtectedFromAccidentalDeletion $False
+        $ou_obj = Get-ADOrganizationalUnit -Identity $ou
       } Catch { $ou_obj = $null }
-      If ($ou_obj -and $ou_obj.Name -eq $ou_name) {
+      If ($ou_obj) {
         Write-Host ("Created OU")
       } Else {
         Write-Host ("Error creating OU")
@@ -32,7 +35,7 @@
 - name: Add test group
   win_domain_group:
     name: "{{ win_domain_groups_tests_ad_group }}"
-    path: "{{ win_domain_groups_tests_ad_ou }}"
+    path: "{{ win_domain_groups_tests_ad_ou_base }}"
     scope: global
     category: security
     protect: no

@@ -31,8 +31,8 @@ provisioner:
           win_domain_groups_no_log: no
           win_domain_groups_tests_domain_name: test.local
           win_domain_groups_tests_safe_mode_password: Not_1_real_password
-          win_domain_groups_tests_ad_group: test
-          win_domain_groups_tests_ad_ou_name: Test
+          win_domain_groups_tests_ad_group: test_group
+          win_domain_groups_tests_ad_ou_name: TestOU
           win_domain_groups_tests_ad_ou: >-
             OU={{ win_domain_groups_tests_ad_ou_name }},{{
             win_domain_groups_tests_ad_ou_base }}

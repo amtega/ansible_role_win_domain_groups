@@ -2,8 +2,32 @@
 
 # Check win_domain_group works properly
 - name: "Add OU: {{ win_domain_groups_tests_ad_ou }}"
-  win_shell: |
-    New-ADOrganizationalUnit -Name "{{ win_domain_groups_tests_ad_ou }}"
+  win_shell: >-
+    # Parameters
+    $ou = "{{ win_domain_groups_tests_ad_ou }}"
+    $ou_name = "{{ win_domain_groups_tests_ad_ou_name }}"
+    $ou_base = "{{ win_domain_groups_tests_ad_ou_base }}"
+
+    Try {
+      $ou_obj = Get-ADOrganizationalUnit -Identity $ou
+    } Catch { $ou_obj = $null }
+
+    If ($ou_obj -and $ou_obj.Name -eq $ou_name) {
+      Try {
+        $ou_obj = New-ADOrganizationalUnit `
+          -Name "$ou_name" `
+          -Path "$ou_base" `
+          -ProtectedFromAccidentalDeletion $False
+      } Catch { $ou_obj = $null }
+      If ($ou_obj -and $ou_obj.Name -eq $ou_name) {
+        Write-Host ("Created OU")
+      } Else {
+        Write-Host ("Error creating OU")
+      }
+    }
+  register: add_ou_result
+  changed_when: "'Created OU' in add_ou_result.stdout"
+  failed_when: "'Error creating OU' in add_ou_result.stdout"
 
 - name: Add test user
   win_domain_user:

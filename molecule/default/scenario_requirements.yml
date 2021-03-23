@@ -5,8 +5,6 @@
     that:
       - win_domain_groups_tests_domain_name is defined
       - win_domain_groups_tests_safe_mode_password is defined
-      - win_domain_groups_tests_ad_user is defined
-      - win_domain_groups_tests_ad_password is defined
       - win_domain_groups_tests_ad_group is defined
       - win_domain_groups_tests_ad_ou is defined
       - win_domain_groups_tests_ad_ou_base is defined

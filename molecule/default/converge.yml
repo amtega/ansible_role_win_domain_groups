@@ -1,0 +1,37 @@
+---
+
+- name: Pre - Converge
+  hosts: molecule_hosts
+  tasks:
+
+    - name: Create test group
+      include_role:
+        name: amtega.win_domain_groups
+      vars:
+        win_domain_groups_defaults:
+          scope: global
+          category: security
+          path: "{{ win_domain_groups_tests_ad_ou }}"
+        win_domain_groups:
+          - name: my_group_new
+            state: present
+          - name: our_group_new
+            state: present
+          - name: your_group_new
+            state: present
+
+    - name: Remove test group
+      include_role:
+        name: amtega.win_domain_groups
+      vars:
+        win_domain_groups_defaults:
+          scope: global
+          category: security
+          path: "{{ win_domain_groups_tests_ad_ou }}"
+        win_domain_groups:
+          - name: my_group_to_remove
+            state: absent
+          - name: our_group_to_remove
+            state: absent
+          - name: your_group_to_remove
+            state: absent

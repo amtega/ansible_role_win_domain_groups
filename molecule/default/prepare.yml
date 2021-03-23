@@ -1,0 +1,14 @@
+---
+
+- name: Prepare
+  hosts: molecule_hosts
+  tasks:
+
+    - name: Molecule requirements for this scenario
+      include: includes/scenario_requirements.yml
+    - name: Create test domain controler
+      include: includes/prepare_ad.yml
+    - name: Check win_domain_group is working properly
+      include: includes/prepare_check_win_domain_group.yml
+    - name: Check win_domain_group is working properly
+      include: includes/prepare_tests.yml

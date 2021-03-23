@@ -1,0 +1,15 @@
+---
+
+
+- name: Populate test group for removal test
+  loop:
+    - my_group_to_remove
+    - our_group_to_remove
+    - your_group_to_remove
+  loop_control:
+    loop_var: group
+  win_domain_group:
+    name: "{{ group }}"
+    scope: global
+    path: "{{ win_domain_groups_tests_ad_ou }}"
+    state: present

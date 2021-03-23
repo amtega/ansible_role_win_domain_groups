@@ -1,0 +1,41 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint: |
+  ${MOLECULE_SCENARIO_DIRECTORY}/includes/linters.sh
+platforms:
+  - name: "WindowsServer-${INSTANCE_UUID:-1}"
+    box: jborean93/WindowsServer2016
+    memory: 2048
+    groups:
+      - molecule_hosts
+provisioner:
+  name: ansible
+  inventory:
+    hosts:
+      molecule_hosts:
+        hosts:
+          WindowsServer-${INSTANCE_UUID:-1}:
+            ansible_host: 127.0.0.1
+            ansible_user: vagrant
+            ansible_password: vagrant
+            ansible_port: 55986
+            ansible_connection: winrm
+            ansible_winrm_transport: ntlm
+            ansible_winrm_server_cert_validation: ignore
+        vars:
+          win_domain_groups_no_log: no
+          win_domain_groups_tests_domain_name: test.local
+          win_domain_groups_tests_safe_mode_password: Not_1_real_password
+          win_domain_groups_tests_ad_group: test_group
+          win_domain_groups_tests_ad_ou_name: TestOU
+          win_domain_groups_tests_ad_ou: >-
+            OU={{ win_domain_groups_tests_ad_ou_name }},{{
+            win_domain_groups_tests_ad_ou_base }}
+          win_domain_groups_tests_ad_ou_base: "DC=test,DC=local"
+verifier:
+  name: ansible

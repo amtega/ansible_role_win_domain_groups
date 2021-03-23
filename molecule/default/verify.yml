@@ -1,0 +1,29 @@
+---
+
+- name: Verify
+  hosts: molecule_hosts
+  tasks:
+    - name: Check groups
+      loop:
+        - name: my_group_new
+          state: present
+        - name: our_group_new
+          state: present
+        - name: your_group_new
+          state: present
+        - name: my_group_to_remove
+          state: absent
+        - name: our_group_to_remove
+          state: absent
+        - name: your_group_to_remove
+          state: absent
+      loop_control:
+        loop_var: group_item
+        label: "{{ group_item.name }}"
+      include: includes/ps1_check_group.yml
+      vars:
+        negate_state:
+          present: absent
+          absent: present
+        group: "{{ group_item.name }}"
+        state_to_fail: "{{ negate_state[group_item.state] }}"

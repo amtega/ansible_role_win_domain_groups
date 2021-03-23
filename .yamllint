@@ -23,9 +23,17 @@ rules:
     level: error
   hyphens:
     level: error
-  indentation: disable
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false
+    level: warning
   key-duplicates: enable
-  line-length: disable
+  line-length:
+    max: 80
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+    level: warning
   new-line-at-end-of-file: disable
   new-lines:
     type: unix

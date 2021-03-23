@@ -10,3 +10,5 @@
       include: prepare_ad.yml
     - name: Check win_domain_group is working properly
       include: prepare_check_win_domain_group.yml
+    - name: Check win_domain_group is working properly
+      include: prepare_tests.yml

@@ -41,7 +41,19 @@
     protect: no
     state: present
 
+- name: Check group exists
+  include: ps1_check_group.yml
+  vars:
+    group: "{{ win_domain_groups_tests_ad_group }}"
+    state_to_fail: absent
+
 - name: Remove test group
   win_domain_group:
     name: "{{ win_domain_groups_tests_ad_group }}"
     state: absent
+
+- name: Check group is absent
+  include: ps1_check_group.yml
+  vars:
+    group: "{{ win_domain_groups_tests_ad_group }}"
+    state_to_fail: present

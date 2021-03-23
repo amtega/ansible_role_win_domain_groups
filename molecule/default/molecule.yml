@@ -6,7 +6,7 @@ driver:
   provider:
     name: virtualbox
 lint: |
-  ${MOLECULE_SCENARIO_DIRECTORY}/linters.sh
+  ${MOLECULE_SCENARIO_DIRECTORY}/includes/linters.sh
 platforms:
   - name: "WindowsServer-${INSTANCE_UUID:-1}"
     box: jborean93/WindowsServer2016

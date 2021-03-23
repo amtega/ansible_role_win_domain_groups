@@ -5,10 +5,10 @@
   tasks:
 
     - name: Molecule requirements for this scenario
-      include: scenario_requirements.yml
+      include: includes/scenario_requirements.yml
     - name: Create test domain controler
-      include: prepare_ad.yml
+      include: includes/prepare_ad.yml
     - name: Check win_domain_group is working properly
-      include: prepare_check_win_domain_group.yml
+      include: includes/prepare_check_win_domain_group.yml
     - name: Check win_domain_group is working properly
-      include: prepare_tests.yml
+      include: includes/prepare_tests.yml

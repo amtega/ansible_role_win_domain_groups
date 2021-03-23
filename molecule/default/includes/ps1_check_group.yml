@@ -1,0 +1,22 @@
+---
+
+# group
+# state_to_fail
+
+- name: Assert group added (using PowerShell 💪🐚)
+  win_shell: |-
+    # Parameters
+    $group = "{{ group }}"
+
+    Try {
+      $group_obj = Get-ADGroup -Identity $group
+    } Catch { $group_obj = $null }
+
+    If ($group_obj -and $group_obj.Name -eq $group) {
+      Write-Host ("group is present")
+    } Else{
+      Write-Host ("group is absent")
+    }
+  register: group_test_result
+  failed_when: "('group is %s' % state_to_fail) in group_test_result.stdout"
+  changed_when: no

@@ -31,7 +31,7 @@
   retries: 30
   delay: 15
 
-- name: Reboot server
+- name: Reboot server # noqa no-handler
   win_reboot:
     msg: "Installing AD. Rebooting..."
     pre_reboot_delay: 15

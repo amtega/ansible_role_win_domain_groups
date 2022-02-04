@@ -25,17 +25,19 @@ rules:
     level: error
   indentation:
     spaces: 2
-    indent-sequences: true
-    check-multi-line-strings: false
+    indent-sequences: yes
+    check-multi-line-strings: no
     level: warning
   key-duplicates: enable
   line-length:
     max: 80
-    allow-non-breakable-words: true
-    allow-non-breakable-inline-mappings: true
+    allow-non-breakable-words: yes
+    allow-non-breakable-inline-mappings: yes
     level: warning
   new-line-at-end-of-file: disable
   new-lines:
     type: unix
   trailing-spaces: disable
-  truthy: disable
+  truthy:
+    allowed-values: ['YES', 'Yes', 'yes', 'NO', 'No', 'no']
+    check-keys: no

@@ -2,12 +2,17 @@
 
 dependency:
   name: galaxy
+  enabled: yes
+  options:
+    ignore-certs: yes
+    ignore-errors: yes
+    role-file: "${MOLECULE_SCENARIO_DIRECTORY}/requirements.yml"
+    requirements-file: "${MOLECULE_SCENARIO_DIRECTORY}/requirements.yml"
 driver:
   name: vagrant
   provider:
     name: virtualbox
-lint: |
-  ${MOLECULE_SCENARIO_DIRECTORY}/includes/linters.sh
+lint: "${MOLECULE_SCENARIO_DIRECTORY}/linters.sh"
 platforms:
   - name: "WindowsServer-${INSTANCE_UUID:-1}"
     box: jborean93/WindowsServer2016
